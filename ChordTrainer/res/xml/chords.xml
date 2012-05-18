@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Chords>
+  <Chord>
+    <Name>Root Shell Maj 7</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+  <Name>Root Shell 7</Name>
+  <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Root Shell 6</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Root Shell Min 7</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Root Shell Min 6</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Non-root Shell Maj 7</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Non-root Shell 7</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Non-root Shell 6</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Non-root Shell Min 7</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Non-root Shell Min 6</Name>
+    <Filter>Shell</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 9 b5</Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 6 </Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>13 #9 </Name>
+    <Filter>13</Filter>
+  </Chord>
+  <Chord>
+    <Name>6</Name>
+    <Filter>6</Filter>
+  </Chord>
+  <Chord>
+    <Name>9</Name>
+    <Filter>9</Filter>
+  </Chord>
+  <Chord>
+    <Name>Maj 7 b5</Name>
+    <Filter>Maj</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 7 b5 1/2 dim</Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 b5 #9</Name>
+    <Filter>9</Filter>
+  </Chord>
+  <Chord>
+    <Name>13</Name>
+    <Filter>13</Filter>
+  </Chord>
+  <Chord>
+    <Name>Maj 7</Name>
+    <Filter>Maj</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 #5</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>Maj 9 b5</Name>
+    <Filter>Maj</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 b5 b9</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>6/9</Name>
+    <Filter>9</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 9</Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 #9 #5</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 6/9</Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>13 b9</Name>
+    <Filter>13</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 b9</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 #9 b5</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>9 #5</Name>
+    <Filter>9</Filter>
+  </Chord>
+  <Chord>
+    <Name>7</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 #9</Name>
+    <Filter>7</Filter>
+  </Chord>
+  <Chord>
+    <Name>9 b5</Name>
+    <Filter>9</Filter>
+  </Chord>
+  <Chord>
+    <Name>Min 7</Name>
+    <Filter>Min</Filter>
+  </Chord>
+  <Chord>
+    <Name>7 b5</Name>
+    <Filter>7</Filter>
+  </Chord>
+</Chords>
