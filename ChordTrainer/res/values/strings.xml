@@ -2,4 +2,26 @@
 <resources>
     <string name="app_name">ChordTrainer</string>
     <string name="buttonNext">Next</string>
+    
+    <string name="chkboxShells">Shells</string>
+    <string name="shells_summary">Displays shells</string>
+    
+    <string name="chkboxJazz">Jazz</string>
+    <string name="jazz_summary">Displays jazz</string>
+    
+    <string name="chkboxMoveables">Moveables</string>
+    <string name="moveables_summary">Displays moveables</string>
+    
+    <string name="settings_label">Settings &#8230;</string>
+    <string name="settings_title">ChordTrainer settings</string>
+    <string name="settings_shortcut">s</string>
+    
+    <string name="shells_label">Shell</string>
+    <string name="jazz_label">Jazz</string>
+    <string name="moveable_label">Moveables</string>
+  
+    
+    <string name="shells_key">shells</string>
+    <string name="jazz_key">jazz</string>
+    <string name="moveables_key">moveables</string>
 </resources>

@@ -1,28 +1,47 @@
 package com.tonydantona.chordtrainer;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
-public class MainActivity extends Activity implements OnClickListener  
+public class MainActivity extends Activity implements OnClickListener, OnSharedPreferenceChangeListener  
 {
 	/** Called when the activity is first created. */
 	
 	Button btnNext;
 	TextView txtViewKey;
 	TextView txtViewChord;
+	
 	boolean boolKeyViewLocked = false;
 	boolean boolChordViewLocked = false;
 	
+	boolean mDisplayShells = true;
+	boolean mDisplayJazz = true;
+	boolean mDisplayMoveables = true;
+	
 	ArrayList<Key> keys;
 	ArrayList<Chord> chords;
+	Map<String,Boolean> mFilter;
+		
+	SharedPreferences prefs;
+	private Random mRand = new Random();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -31,12 +50,15 @@ public class MainActivity extends Activity implements OnClickListener
         
         setContentView(R.layout.main);
         
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
+       
         XMLKeysParser keysParser = new XMLKeysParser();
         keys =  keysParser.ParseXMLKeysFile(this, MainActivity.class.getSimpleName());
         
         XMLChordsParser chordsParser = new XMLChordsParser();
         chords = chordsParser.ParseXMLChordsFile(this, MainActivity.class.getSimpleName());
-        
+           
         btnNext = (Button) findViewById(R.id.buttonNext);
         btnNext.setOnClickListener(this);
         
@@ -44,7 +66,7 @@ public class MainActivity extends Activity implements OnClickListener
         txtViewKey.setOnTouchListener(onTxtKeyTouch);
         
         txtViewChord = (TextView) findViewById(R.id.TextView01);
-        txtViewChord.setOnTouchListener(onTxtChordTouch);
+        txtViewChord.setOnTouchListener(onTxtChordTouch);              
     }
 
 	private OnTouchListener onTxtKeyTouch = new OnTouchListener()
@@ -98,17 +120,26 @@ public class MainActivity extends Activity implements OnClickListener
 	{
 		try
         {
-        	// change the key text			
-        	if(boolKeyViewLocked == false)
-			{
-        		txtViewKey.setText(GetRandomKey().getName());
-			}
-        	
-        	// change the chord text        	
-        	if(boolChordViewLocked == false)
+        	switch(v.getId())
         	{
-        		txtViewChord.setText(GetRandomChord().getName());
+        	case R.id.buttonNext:
+        		// change the key text			
+	        	if(boolKeyViewLocked == false)
+				{
+	        		txtViewKey.setText(GetRandomKey().getName());
+				}
+	        	
+	        	// change the chord text        	
+	        	if(boolChordViewLocked == false)
+	        	{
+	        		txtViewChord.setText(GetRandomChord().getName());
+	        	}
+	        	break;
+	        	
+        	default:
+        		Toast.makeText(MainActivity.this, "Oops don't recognize that click", Toast.LENGTH_LONG);
         	}
+			
         }
         catch (Exception e)
         {
@@ -118,15 +149,72 @@ public class MainActivity extends Activity implements OnClickListener
 	
 	public Key GetRandomKey()
 	{
-		int r = (int) (Math.random() * keys.size() );
-		return keys.get(r);
+		int r = mRand.nextInt(keys.size() );
+		return keys.get(r);		
 	}
 	
 	public Chord GetRandomChord()
 	{
-		int r = (int) (Math.random() * chords.size() );
-		return chords.get(r);
+		ArrayList<Chord> filteredList = new ArrayList<Chord>();
+		for(Chord curr : chords)
+			{
+				if(mDisplayShells && curr.getFilter().equalsIgnoreCase("Shell")  )
+				{
+					filteredList.add(curr);
+				}
+				else if (mDisplayJazz && curr.getFilter().equalsIgnoreCase("Jazz"))
+				{
+					filteredList.add(curr);
+				}
+				else if (mDisplayMoveables && curr.getFilter().equalsIgnoreCase("Moveable"))
+				{
+					filteredList.add(curr);
+				}
+			}
+		
+		int r = mRand.nextInt(filteredList.size());
+		return filteredList.get(r);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+			case R.id.prefs:
+				startActivity(new Intent(this, Prefs.class));
+				return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
+	{
+		if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.shells_key)))
+		{
+			mDisplayShells = sharedPreferences.getBoolean("shells", false); 
+		}
+		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.jazz_key)))
+		{
+			mDisplayJazz = sharedPreferences.getBoolean("jazz", false); 
+		}
+		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.moveables_key)))
+		{
+			mDisplayMoveables = sharedPreferences.getBoolean("moveables", false); 
+		}		
+	}	
 }
 
 
