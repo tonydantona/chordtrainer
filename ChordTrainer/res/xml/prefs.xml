@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/shells_key"
+        android:summary="@string/shells_summary"
+        android:title="@string/chkboxShells" />
+    
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/jazz_key"
+        android:summary="@string/jazz_summary"
+        android:title="@string/chkboxJazz" />
+    
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="@string/moveables_key"
+        android:summary="@string/moveables_summary"
+        android:title="@string/chkboxMoveables" />
+
+</PreferenceScreen>
