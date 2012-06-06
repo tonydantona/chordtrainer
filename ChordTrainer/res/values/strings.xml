@@ -24,4 +24,6 @@
     <string name="shells_key">shells</string>
     <string name="jazz_key">jazz</string>
     <string name="moveables_key">moveables</string>
+    
+    <string name="spacer"></string>
 </resources>

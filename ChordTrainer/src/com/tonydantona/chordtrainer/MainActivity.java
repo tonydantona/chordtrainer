@@ -3,7 +3,6 @@ package com.tonydantona.chordtrainer;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +23,7 @@ import android.view.View.OnTouchListener;
 
 public class MainActivity extends Activity implements OnClickListener, OnSharedPreferenceChangeListener  
 {
-	/** Called when the activity is first created. */
+	private static final String TAG = MainActivity.class.getSimpleName();
 	
 	Button btnNext;
 	TextView txtViewKey;
@@ -44,6 +44,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	private Random mRand = new Random();
 	
     @Override
+    /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
@@ -66,9 +67,58 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         txtViewKey.setOnTouchListener(onTxtKeyTouch);
         
         txtViewChord = (TextView) findViewById(R.id.TextView01);
-        txtViewChord.setOnTouchListener(onTxtChordTouch);              
+        txtViewChord.setOnTouchListener(onTxtChordTouch);  
+        
+         Log.d(TAG, String.format("onCreate"));
     }
+    
+    @Override
+	protected void onPause() 
+    {
+		super.onPause();
+		Log.d(TAG, String.format("onPause")); 
+	}
 
+	@Override
+	protected void onRestart() 
+	{
+		super.onRestart();
+		Log.d(TAG, String.format("onRestart")); 
+	}
+
+	@Override
+	protected void onStart() 
+	{
+		super.onStart();
+		Log.d(TAG, String.format("onStart")); 
+	}
+
+	@Override
+	protected void onStop() 
+	{
+		super.onStop();
+		Log.d(TAG, String.format("onStop")); 
+	}
+
+	@Override
+	protected void onResume() 
+	{
+		super.onResume();
+		
+		mDisplayShells = prefs.getBoolean("shells", false);
+		mDisplayJazz = prefs.getBoolean("jazz", false);
+		mDisplayMoveables = prefs.getBoolean("moveables", false);
+		
+	    // init the view by forcing a 'next' click
+        View v = new View(this);
+        v.setId(R.id.buttonNext);
+        onClick(v);
+        
+
+		
+		Log.d(TAG, String.format("onResume")); 
+	}
+	
 	private OnTouchListener onTxtKeyTouch = new OnTouchListener()
 	{
 		@Override
@@ -114,7 +164,6 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		
 	};
 	
-
     @Override
 	public void onClick(View v) 
 	{
@@ -200,6 +249,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	}
 
 	@Override
+	// someone clicked the filter(s) on the pref menu - retrieve the value
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
 		if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.shells_key)))
