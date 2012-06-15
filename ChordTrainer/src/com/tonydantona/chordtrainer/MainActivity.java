@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,6 +31,9 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	TextView txtViewKey;
 	TextView txtViewChord;
 	
+	TextView txtTimer;
+	long mStartTime = 0;
+	
 	boolean boolKeyViewLocked = false;
 	boolean boolChordViewLocked = false;
 	
@@ -42,6 +47,8 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		
 	SharedPreferences prefs;
 	private Random mRand = new Random();
+	
+	private Handler mHandler = new Handler();
 	
     @Override
     /** Called when the activity is first created. */
@@ -65,12 +72,56 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         
         txtViewKey = (TextView) findViewById(R.id.TextView02);
         txtViewKey.setOnTouchListener(onTxtKeyTouch);
-        
+               
         txtViewChord = (TextView) findViewById(R.id.TextView01);
         txtViewChord.setOnTouchListener(onTxtChordTouch);  
         
+        txtTimer = (TextView) findViewById(R.id.txtTimer);
+        txtTimer.setOnTouchListener(mStartListener);
+        
          Log.d(TAG, String.format("onCreate"));
     }
+    
+    private OnTouchListener mStartListener = new OnTouchListener()
+    {
+		@Override
+		public boolean onTouch(View v, MotionEvent event)
+		{
+			if (mStartTime == 0L)
+			{
+				mStartTime = System.currentTimeMillis();
+				mHandler.removeCallbacks(mUpdateTimeTask);
+				mHandler.postDelayed(mUpdateTimeTask, 100);
+			}
+			return false;
+		}
+    	
+    };
+    private Runnable mUpdateTimeTask = new Runnable()
+    {
+
+		@Override
+		public void run()
+		{
+			final long start = mStartTime;
+			long millis = SystemClock.uptimeMillis() - start;
+			int seconds = (int) (millis / 1000);
+			int minutes = seconds / 60;
+			seconds = seconds % 60;
+			
+			if (seconds < 10)
+			{
+				txtTimer.setText(" " + minutes + ":0" + seconds);
+			}
+			else
+			{
+				txtTimer.setText(" " + minutes + ":" + seconds);
+			}
+			
+			mHandler.postAtTime(this, start + (((minutes * 60) + seconds + 1) * 1000));			
+		}
+    	
+    };
     
     @Override
 	protected void onPause() 
@@ -113,9 +164,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         View v = new View(this);
         v.setId(R.id.buttonNext);
         onClick(v);
-        
-
-		
+        		
 		Log.d(TAG, String.format("onResume")); 
 	}
 	

@@ -18,13 +18,14 @@ public final class R {
         public static final int keyunlockedback=0x7f020004;
     }
     public static final class id {
-        public static final int ImageView01=0x7f070002;
-        public static final int ImageView02=0x7f070000;
-        public static final int TextView01=0x7f070003;
-        public static final int TextView02=0x7f070001;
-        public static final int buttonNext=0x7f070005;
-        public static final int imageView2=0x7f070004;
-        public static final int prefs=0x7f070006;
+        public static final int ImageView01=0x7f070003;
+        public static final int ImageView02=0x7f070001;
+        public static final int TextView01=0x7f070004;
+        public static final int TextView02=0x7f070002;
+        public static final int buttonNext=0x7f070006;
+        public static final int imageView2=0x7f070005;
+        public static final int prefs=0x7f070007;
+        public static final int txtTimer=0x7f070000;
     }
     public static final class layout {
         public static final int main=0x7f030000;
