@@ -18,5 +18,6 @@
         android:key="@string/moveables_key"
         android:summary="@string/moveables_summary"
         android:title="@string/chkboxMoveables" />
+    <EditTextPreference android:key="@string/timer_key" android:summary="@string/timer_summary" android:title="@string/editTimer"/>
 
 </PreferenceScreen>

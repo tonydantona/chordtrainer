@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -48,7 +49,12 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	SharedPreferences prefs;
 	private Random mRand = new Random();
 	
-	private Handler mHandler = new Handler();
+	private boolean mIsTimerEnabled = false;
+	private CountDownTimer mCountDown;
+	
+	private final long INTERVAL = 1000;
+	private long mDuration = 8000L;
+	private String pad;
 	
     @Override
     /** Called when the activity is first created. */
@@ -70,58 +76,82 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         btnNext = (Button) findViewById(R.id.buttonNext);
         btnNext.setOnClickListener(this);
         
-        txtViewKey = (TextView) findViewById(R.id.TextView02);
+        txtViewKey = (TextView) findViewById(R.id.txtViewKey);
         txtViewKey.setOnTouchListener(onTxtKeyTouch);
                
-        txtViewChord = (TextView) findViewById(R.id.TextView01);
+        txtViewChord = (TextView) findViewById(R.id.txtViewChord);
         txtViewChord.setOnTouchListener(onTxtChordTouch);  
         
-        txtTimer = (TextView) findViewById(R.id.txtTimer);
-        txtTimer.setOnTouchListener(mStartListener);
-        
-         Log.d(TAG, String.format("onCreate"));
+        txtTimer = (TextView) findViewById(R.id.txtViewTimer);
+        txtTimer.setOnTouchListener(onTimerTouch);
+              
+        Log.d(TAG, String.format("onCreate"));
     }
     
-    private OnTouchListener mStartListener = new OnTouchListener()
+    private CountDownTimer CreateCountDownTimer(long duration, long interval)
     {
-		@Override
+    	  return new CountDownTimer(duration + 1000, interval) 
+			     {
+			            public void onTick(long millisUntilFinished) 
+			            {
+			                if(String.valueOf(millisUntilFinished / 1000).length() == 1)
+			                {
+			                	pad = ":0";
+			                }
+			                else
+			                {
+			                	pad = ":";
+			                }
+			            	txtTimer.setText(pad + millisUntilFinished / 1000);
+			            }
+	
+			            public void onFinish() 
+			            {
+			                if(mIsTimerEnabled)
+			                {
+			            	    // init the view by forcing a 'next' click
+			                    View v = new View(MainActivity.this);
+			                    v.setId(R.id.buttonNext);
+			                    onClick(v);
+
+			                	beginTimer(mDuration, INTERVAL);
+			                }
+			            }
+			            
+		         };
+    }
+        
+    private OnTouchListener onTimerTouch = new OnTouchListener()
+    {
+    	@Override
 		public boolean onTouch(View v, MotionEvent event)
 		{
-			if (mStartTime == 0L)
-			{
-				mStartTime = System.currentTimeMillis();
-				mHandler.removeCallbacks(mUpdateTimeTask);
-				mHandler.postDelayed(mUpdateTimeTask, 100);
-			}
+    		if(mIsTimerEnabled)
+    		{
+    			mIsTimerEnabled = false;
+    			endTimer();
+    		}
+    		else
+    		{
+    			mIsTimerEnabled = true;
+    			beginTimer(mDuration, INTERVAL);
+    		}
+    			        			
 			return false;
-		}
-    	
+		}   	
     };
-    private Runnable mUpdateTimeTask = new Runnable()
+    
+    private void beginTimer(long duration, long interval)
     {
-
-		@Override
-		public void run()
-		{
-			final long start = mStartTime;
-			long millis = SystemClock.uptimeMillis() - start;
-			int seconds = (int) (millis / 1000);
-			int minutes = seconds / 60;
-			seconds = seconds % 60;
-			
-			if (seconds < 10)
-			{
-				txtTimer.setText(" " + minutes + ":0" + seconds);
-			}
-			else
-			{
-				txtTimer.setText(" " + minutes + ":" + seconds);
-			}
-			
-			mHandler.postAtTime(this, start + (((minutes * 60) + seconds + 1) * 1000));			
-		}
-    	
-    };
+		mCountDown = CreateCountDownTimer(duration,interval);
+		mCountDown.start();   			
+    }
+    
+    private void endTimer()
+    {
+		mCountDown.cancel();
+		txtTimer.setText(":00");
+    }
     
     @Override
 	protected void onPause() 
@@ -312,7 +342,13 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.moveables_key)))
 		{
 			mDisplayMoveables = sharedPreferences.getBoolean("moveables", false); 
+		}
+		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.timer_key)))
+		{
+			long dur = Long.parseLong(sharedPreferences.getString("timer", "5"));
+			mDuration =  dur * 1000;
 		}		
+
 	}	
 }
 

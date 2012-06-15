@@ -12,6 +12,9 @@
     <string name="chkboxMoveables">Moveables</string>
     <string name="moveables_summary">Displays moveables</string>
     
+    <string name="editTimer">Timer</string>
+    <string name="timer_summary">Displays Timer</string>
+    
     <string name="settings_label">Settings &#8230;</string>
     <string name="settings_title">ChordTrainer settings</string>
     <string name="settings_shortcut">s</string>
@@ -24,6 +27,8 @@
     <string name="shells_key">shells</string>
     <string name="jazz_key">jazz</string>
     <string name="moveables_key">moveables</string>
+    <string name="timer_key"> timer</string>
     
-    <string name="spacer"></string>
+    <string name="spacer">spacer</string>
+    <string name="chart_description">Chart</string>
 </resources>

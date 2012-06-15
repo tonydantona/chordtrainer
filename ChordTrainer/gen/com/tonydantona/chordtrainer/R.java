@@ -16,16 +16,33 @@ public final class R {
         public static final int icon=0x7f020002;
         public static final int keylockedback=0x7f020003;
         public static final int keyunlockedback=0x7f020004;
+        public static final int major5=0x7f020005;
     }
     public static final class id {
-        public static final int ImageView01=0x7f070003;
-        public static final int ImageView02=0x7f070001;
-        public static final int TextView01=0x7f070004;
-        public static final int TextView02=0x7f070002;
-        public static final int buttonNext=0x7f070006;
-        public static final int imageView2=0x7f070005;
-        public static final int prefs=0x7f070007;
-        public static final int txtTimer=0x7f070000;
+        public static final int ImageView02=0x7f07000d;
+        public static final int buttonNext=0x7f070014;
+        public static final int prefs=0x7f070017;
+        public static final int tableLayout1=0x7f070000;
+        public static final int tableLayout2=0x7f070006;
+        public static final int tableLayout3=0x7f07000e;
+        public static final int tableRow1=0x7f070003;
+        public static final int tableRow2=0x7f070005;
+        public static final int tableRow3=0x7f070011;
+        public static final int tableRow4=0x7f07000f;
+        public static final int tableRow5=0x7f070007;
+        public static final int tableRow6=0x7f07000b;
+        public static final int tableRow7=0x7f070016;
+        public static final int tableRow8=0x7f070001;
+        public static final int tableRow9=0x7f070009;
+        public static final int textView3=0x7f070013;
+        public static final int textView4=0x7f070012;
+        public static final int textView5=0x7f070015;
+        public static final int textView6=0x7f070010;
+        public static final int textView7=0x7f07000a;
+        public static final int textView8=0x7f070002;
+        public static final int txtViewChord=0x7f07000c;
+        public static final int txtViewKey=0x7f070008;
+        public static final int txtViewTimer=0x7f070004;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -36,22 +53,26 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050000;
         public static final int buttonNext=0x7f050001;
+        public static final int chart_description=0x7f050015;
         public static final int chkboxJazz=0x7f050004;
         public static final int chkboxMoveables=0x7f050006;
         public static final int chkboxShells=0x7f050002;
-        public static final int jazz_key=0x7f05000f;
-        public static final int jazz_label=0x7f05000c;
+        public static final int editTimer=0x7f050008;
+        public static final int jazz_key=0x7f050011;
+        public static final int jazz_label=0x7f05000e;
         public static final int jazz_summary=0x7f050005;
-        public static final int moveable_label=0x7f05000d;
-        public static final int moveables_key=0x7f050010;
+        public static final int moveable_label=0x7f05000f;
+        public static final int moveables_key=0x7f050012;
         public static final int moveables_summary=0x7f050007;
-        public static final int settings_label=0x7f050008;
-        public static final int settings_shortcut=0x7f05000a;
-        public static final int settings_title=0x7f050009;
-        public static final int shells_key=0x7f05000e;
-        public static final int shells_label=0x7f05000b;
+        public static final int settings_label=0x7f05000a;
+        public static final int settings_shortcut=0x7f05000c;
+        public static final int settings_title=0x7f05000b;
+        public static final int shells_key=0x7f050010;
+        public static final int shells_label=0x7f05000d;
         public static final int shells_summary=0x7f050003;
-        public static final int spacer=0x7f050011;
+        public static final int spacer=0x7f050014;
+        public static final int timer_key=0x7f050013;
+        public static final int timer_summary=0x7f050009;
     }
     public static final class xml {
         public static final int chords=0x7f040000;
