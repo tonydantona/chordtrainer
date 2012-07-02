@@ -9,20 +9,20 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener, OnSharedPreferenceChangeListener  
 {
@@ -31,6 +31,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	Button btnNext;
 	TextView txtViewKey;
 	TextView txtViewChord;
+	ImageView imgChart;
 	
 	TextView txtTimer;
 	long mStartTime = 0;
@@ -55,7 +56,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	private final long INTERVAL = 1000;
 	private long mDuration = 8000L;
 	private String pad;
-	
+	   	
     @Override
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) 
@@ -64,6 +65,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         
         setContentView(R.layout.main);
         
+        // get access to the standard shared preferences for this context
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
        
@@ -84,7 +86,13 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         
         txtTimer = (TextView) findViewById(R.id.txtViewTimer);
         txtTimer.setOnTouchListener(onTimerTouch);
-              
+        
+        imgChart = (ImageView) findViewById(R.id.ImageView02);
+        imgChart.setOnClickListener(onChartClick);
+        
+        // keeps the window from dimming or sleeping for this activity only (eg. prefs screen will still dim/sleep)
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        
         Log.d(TAG, String.format("onCreate"));
     }
     
@@ -121,6 +129,16 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		         };
     }
         
+    private OnClickListener onChartClick = new OnClickListener()
+    {
+		@Override
+		public void onClick(View v)
+		{
+			v.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slideleft));
+			imgChart.setImageResource(R.drawable.major5);
+		}
+     };
+     
     private OnTouchListener onTimerTouch = new OnTouchListener()
     {
     	@Override
@@ -178,6 +196,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	protected void onStop() 
 	{
 		super.onStop();
+		
 		Log.d(TAG, String.format("onStop")); 
 	}
 
@@ -194,8 +213,8 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         View v = new View(this);
         v.setId(R.id.buttonNext);
         onClick(v);
-        		
-		Log.d(TAG, String.format("onResume")); 
+        
+ 		Log.d(TAG, String.format("onResume")); 
 	}
 	
 	private OnTouchListener onTxtKeyTouch = new OnTouchListener()
@@ -307,9 +326,9 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
+		// get our menu.xml with the 3 simple attribs
+		// (id, title and icon) and create a java object
+		getMenuInflater().inflate(R.menu.menu, menu);
 		
 		return true;
 	}
@@ -319,7 +338,10 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	{
 		switch(item.getItemId())
 		{
-			case R.id.prefs:
+			// our menu has only one item: Preferences for now - that's what must have been clicked
+			// (remember the menu is what comes up when the menu button is clicked - there could have been
+			// multiple choices)
+			case R.id.itemPrefs:
 				startActivity(new Intent(this, Prefs.class));
 				return true;
 		}
@@ -331,24 +353,29 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	// someone clicked the filter(s) on the pref menu - retrieve the value
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
 	{
+		// the following sharedPreferences.get???? calls use a id, default if not found as the arguments
+		
 		if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.shells_key)))
 		{
-			mDisplayShells = sharedPreferences.getBoolean("shells", false); 
+			mDisplayShells = sharedPreferences.getBoolean("shells", false);
+			Log.d(TAG, String.format(key + ": now = " + mDisplayShells));
 		}
 		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.jazz_key)))
 		{
-			mDisplayJazz = sharedPreferences.getBoolean("jazz", false); 
+			mDisplayJazz = sharedPreferences.getBoolean("jazz", false);
+			Log.d(TAG, String.format(key + ": now = " + mDisplayJazz));
 		}
 		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.moveables_key)))
 		{
-			mDisplayMoveables = sharedPreferences.getBoolean("moveables", false); 
+			mDisplayMoveables = sharedPreferences.getBoolean("moveables", false);
+			Log.d(TAG, String.format(key + ": now = " + mDisplayMoveables));
 		}
 		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.timer_key)))
 		{
 			long dur = Long.parseLong(sharedPreferences.getString("timer", "5"));
 			mDuration =  dur * 1000;
-		}		
-
+			Log.d(TAG, String.format(key + ": now = " + dur));
+		}
 	}	
 }
 
