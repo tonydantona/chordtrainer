@@ -3,6 +3,7 @@ package com.tonydantona.chordtrainer;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,9 +40,10 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	boolean boolKeyViewLocked = false;
 	boolean boolChordViewLocked = false;
 	
-	boolean mDisplayShells = true;
-	boolean mDisplayJazz = true;
-	boolean mDisplayMoveables = true;
+	private boolean mDisplayShells = true;
+	private boolean mDisplayJazz = true;
+	private boolean mDisplayMoveables = true;
+	private long mDuration;
 	
 	ArrayList<Key> keys;
 	ArrayList<Chord> chords;
@@ -54,7 +56,6 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	private CountDownTimer mCountDown;
 	
 	private final long INTERVAL = 1000;
-	private long mDuration = 8000L;
 	private String pad;
 	   	
     @Override
@@ -68,7 +69,11 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
         // get access to the standard shared preferences for this context
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
-       
+		
+		// get the count down time
+		long dur = Long.parseLong(prefs.getString("timer", "5"));
+		mDuration =  dur * INTERVAL;
+      
         XMLKeysParser keysParser = new XMLKeysParser();
         keys =  keysParser.ParseXMLKeysFile(this, MainActivity.class.getSimpleName());
         
@@ -133,9 +138,9 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
     {
 		@Override
 		public void onClick(View v)
-		{
+		{			
 			v.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.slideleft));
-			imgChart.setImageResource(R.drawable.major5);
+			imgChart.setImageDrawable( getResources().getDrawable(R.drawable.major5) );
 		}
      };
      
@@ -209,6 +214,10 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		mDisplayJazz = prefs.getBoolean("jazz", false);
 		mDisplayMoveables = prefs.getBoolean("moveables", false);
 		
+		long dur = Long.parseLong(prefs.getString("timer", "5"));
+		mDuration =  dur * INTERVAL;
+
+		
 	    // init the view by forcing a 'next' click
         View v = new View(this);
         v.setId(R.id.buttonNext);
@@ -239,6 +248,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		}
 	};
 	
+	
 	private OnTouchListener onTxtChordTouch = new OnTouchListener()
 	{
 
@@ -262,7 +272,8 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		
 	};
 	
-    @Override
+    
+	@Override
 	public void onClick(View v) 
 	{
 		try
@@ -284,7 +295,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 	        	break;
 	        	
         	default:
-        		Toast.makeText(MainActivity.this, "Oops don't recognize that click", Toast.LENGTH_LONG);
+        		Toast.makeText(MainActivity.this, "Oops don't recognize that click", Toast.LENGTH_LONG).show();
         	}
 			
         }
@@ -348,7 +359,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		
 		return false;
 	}
-
+	
 	@Override
 	// someone clicked the filter(s) on the pref menu - retrieve the value
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) 
@@ -373,7 +384,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSharedP
 		else if(key.equalsIgnoreCase(MainActivity.this.getString(R.string.timer_key)))
 		{
 			long dur = Long.parseLong(sharedPreferences.getString("timer", "5"));
-			mDuration =  dur * 1000;
+			mDuration =  dur * INTERVAL;
 			Log.d(TAG, String.format(key + ": now = " + dur));
 		}
 	}	
