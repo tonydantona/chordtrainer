@@ -31,4 +31,5 @@
     
     <string name="spacer">spacer</string>
     <string name="chart_description">Chart</string>
+    <string name="titleItemPrefs">Preferences</string>
 </resources>
